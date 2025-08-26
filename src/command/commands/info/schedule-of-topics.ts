@@ -9,7 +9,7 @@ export const command: Command = {
 		.setName('schedule-of-topics')
 		.setDescription('sends the schedule of topics'),
 	init: () => {},
-	authorizedRoleIDs: [Roles.Student],
+	authorizedRoleIDs: [Roles.Student, Roles.StudentAlumni],
 	execute: async (interaction: ChatInputCommandInteraction) => {
 		if (interaction.guild === null) {
 			return;

@@ -40,5 +40,5 @@ interface Channels {
 	staff_bot_commands: Snowflake;
     category_above_newest_semester: Snowflake;
 	server_lock_explanation: Snowflake;
-	spec_dub_chat: Snowflake;
+	spec_dub_questions: Snowflake;
 };

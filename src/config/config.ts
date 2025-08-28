@@ -40,7 +40,7 @@ const devConfig: Config = {
 		staff_bot_commands: "1377812261170712699",
 		category_above_newest_semester: "1377812181122289784",
 		server_lock_explanation: "1377812423859503164",
-		spec_dub_chat: "1410652480638943272"
+		spec_dub_questions: "1410652480638943272"
 	}
 };
 
@@ -81,7 +81,7 @@ const prodConfig: Config = {
 		staff_bot_commands: '749407788156846162',
 		category_above_newest_semester: '1076598856634085446',
 		server_lock_explanation: '1348505517328433213',
-		spec_dub_chat: "1410649990119952404"
+		spec_dub_questions: "1410649990119952404"
 	}
 };
 

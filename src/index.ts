@@ -334,14 +334,14 @@ client.on('stageInstanceCreate', async (stageInstance) => {
 		return;
 	}
 
-    const specDubChat = stageInstance.guild.channels.cache.get(Channels.spec_dub_chat);
-	if (!(specDubChat instanceof BaseGuildTextChannel)) {
+    const specDubQuestions = stageInstance.guild.channels.cache.get(Channels.spec_dub_questions);
+	if (!(specDubQuestions instanceof BaseGuildTextChannel)) {
 		return;
 	}
 
-	await deleteAllMessagesInChannel(specDubChat);
+	await deleteAllMessagesInChannel(specDubQuestions);
 
-	await specDubChat.permissionOverwrites.edit(specDubChat.guild.roles.everyone, {
+	await specDubQuestions.permissionOverwrites.edit(specDubQuestions.guild.roles.everyone, {
 		// @ts-expect-error
 		[PermissionFlagsBits.ViewChannel]: true
 	});
@@ -352,12 +352,12 @@ client.on('stageInstanceDelete', async (stageInstance) => {
 		return;
 	}
 
-    const specDubChat = stageInstance.guild.channels.cache.get(Channels.spec_dub_chat);
-	if (!(specDubChat instanceof BaseGuildTextChannel)) {
+    const specDubQuestions = stageInstance.guild.channels.cache.get(Channels.spec_dub_questions);
+	if (!(specDubQuestions instanceof BaseGuildTextChannel)) {
 		return;
 	}
 
-	await specDubChat.permissionOverwrites.edit(specDubChat.guild.roles.everyone, {
+	await specDubQuestions.permissionOverwrites.edit(specDubQuestions.guild.roles.everyone, {
 		// @ts-expect-error
 		[PermissionFlagsBits.ViewChannel]: false
 	});

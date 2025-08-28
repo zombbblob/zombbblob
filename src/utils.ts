@@ -1,4 +1,4 @@
-import { Guild, GuildBasedChannel, InteractionResponse, PermissionOverwriteOptions, PermissionsBitField, PrivateThreadChannel, PublicThreadChannel, Role, Snowflake, TextChannel } from 'discord.js';
+import { BaseGuildTextChannel, Guild, GuildBasedChannel, InteractionResponse, PermissionOverwriteOptions, PermissionsBitField, PrivateThreadChannel, PublicThreadChannel, Role, Snowflake, TextChannel } from 'discord.js';
 
 import { ConfigHandler } from "./config/config";
 import fs from "fs";
@@ -189,6 +189,36 @@ export function allFilesInFolderAndSubfolders(startingPath: string): string[] {
 	}
 
 	return files;
+}
+
+export async function deleteAllMessagesInChannel(channel: BaseGuildTextChannel) {
+    try {
+        while (true) {
+            const messages = await channel.messages.fetch();
+            
+            if (messages.size === 0) break;
+            
+            const bulkDeletableMessages = messages.filter(msg => 
+                Date.now() - msg.createdTimestamp < 14 * 24 * 60 * 60 * 1000
+            );
+            const nonBulkDeletableMessages = messages.filter(msg => 
+                Date.now() - msg.createdTimestamp >= 14 * 24 * 60 * 60 * 1000
+            );
+            
+			await channel.bulkDelete(bulkDeletableMessages);
+            
+            for (const message of nonBulkDeletableMessages.values()) {
+                try {
+                    await message.delete();
+                } catch (error) {
+                    console.error('Error deleting old message:', error);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error clearing channel:', error);
+        return 0;
+    }
 }
 
 export const EXAM_LOCK_ENABLED_ROLE_NAME = "Exam Lock Enabled";

@@ -341,7 +341,11 @@ client.on('stageInstanceCreate', async (stageInstance) => {
 
 	await deleteAllMessagesInChannel(specDubQuestions);
 
-	await specDubQuestions.send("Reminder: **messages sent in this channel will be visible in the recording!**\n\nSet your server nickname to something you would be comfortable showing up in the recording. **Profile pictures will not be visible.**")
+	await specDubQuestions.send(
+		"Reminder: **messages sent in this channel will be visible in the recording!**\n" +
+		"Set your server nickname to something you would be comfortable showing up in the recording.\n" +
+		"**Profile pictures will not be visible.**"
+	)
 
 	await specDubQuestions.permissionOverwrites.edit(specDubQuestions.guild.roles.everyone, {
 		// @ts-expect-error

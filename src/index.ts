@@ -1,5 +1,6 @@
 import {
 	ActivityType,
+	BaseGuildTextChannel,
 	Client,
 	GatewayIntentBits,
 	GuildChannel,
@@ -7,11 +8,12 @@ import {
 	Message,
 	MessageReaction,
 	Partials,
+	PermissionFlagsBits,
 	Snowflake,
 } from "discord.js";
 import fetch from "node-fetch";
 import path from "path";
-import { applyLockRollPermsToChannel, MEE6_ID, getPossibleRolesForStudent, canCommunicate, maintainersPingString, allFilesInFolderAndSubfolders } from "./utils";
+import { applyLockRollPermsToChannel, MEE6_ID, getPossibleRolesForStudent, canCommunicate, maintainersPingString, allFilesInFolderAndSubfolders, deleteAllMessagesInChannel } from "./utils";
 import { registerCommands } from "./command/registerCommands";
 import { Command } from "./command/command";
 import { checkInfection } from "./fun/zombiegame";
@@ -325,6 +327,40 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
 	} else if (!oldMember.roles.resolve(Roles.Student) && newMember.roles.resolve(Roles.Student)) {
 		await newMember.roles.add(Roles.ExamLocked);
 	}
+});
+
+client.on('stageInstanceCreate', async (stageInstance) => {
+	if (stageInstance.guild === null) {
+		return;
+	}
+
+    const specDubChat = stageInstance.guild.channels.cache.get(Channels.spec_dub_chat);
+	if (!(specDubChat instanceof BaseGuildTextChannel)) {
+		return;
+	}
+
+	await deleteAllMessagesInChannel(specDubChat);
+
+	await specDubChat.permissionOverwrites.edit(specDubChat.guild.roles.everyone, {
+		// @ts-expect-error
+		[PermissionFlagsBits.ViewChannel]: true
+	});
+});
+
+client.on('stageInstanceDelete', async (stageInstance) => {
+	if (stageInstance.guild === null) {
+		return;
+	}
+
+    const specDubChat = stageInstance.guild.channels.cache.get(Channels.spec_dub_chat);
+	if (!(specDubChat instanceof BaseGuildTextChannel)) {
+		return;
+	}
+
+	await specDubChat.permissionOverwrites.edit(specDubChat.guild.roles.everyone, {
+		// @ts-expect-error
+		[PermissionFlagsBits.ViewChannel]: false
+	});
 });
 
 (async function () {

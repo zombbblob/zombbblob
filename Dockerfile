@@ -1,5 +1,8 @@
 FROM node:lts-alpine
 
+# Dependencies for building node-gyp packages
+RUN apk add python3 make g++
+
 WORKDIR /app
 
 COPY . .
